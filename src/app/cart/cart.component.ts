@@ -15,6 +15,8 @@ export class CartComponent implements OnInit {
 
   constructor(private cartService: CartService, private router: Router) {}
 
+  showCardDetails = false;
+
   cart: any[] = [];
   message: string | null = null;
   totalPrice: number = 0;
@@ -69,11 +71,9 @@ export class CartComponent implements OnInit {
   }
 
   handleCheckOut(): void {
+    this.showCardDetails = true;
     this.message = "You need to login before you can place an order";
-    setTimeout(() => {
-      this.message = null;
-      this.router.navigate(['/login']);
-    }, 3000);
+  
   }
 
   // Method to simulate cart load (for testing purpose)

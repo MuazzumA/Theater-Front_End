@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { MovieShowingComponent } from '../movie-showing/movie-showing.component';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class MovieSelectionComponent {
   data: any[] = [];
   searchQuery: string = ''; // Property to hold the search input
   filteredMovies: any[] = []; // Property to hold the filtered results
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -51,6 +54,7 @@ export class MovieSelectionComponent {
       }, error => {
         console.error('Error fetching movie details:', error);
       });
+      this.router.navigate(['/seat', movieId]);
   }
 
 }

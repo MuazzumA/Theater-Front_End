@@ -1,24 +1,29 @@
-<div *ngIf="cart.length > 0; else emptyCart">
-  <div *ngFor="let item of cart" class="cart-item">
-    <img [src]="item.imageUrl" alt="{{ item.name }}" class="cart-item-image" style="width: 100px; height: 150px;">
-    <div class="cart-item-info">
-      <h3>{{ item.name }}</h3>
-      <p>Price: ${{ item.price }}</p>
-      <p>Quantity: {{ item.quantity }}</p>
-      <button (click)="incrementItem(item.id)">+</button>
-      <button (click)="decrementItem(item.id)">-</button>
-      <button (click)="removeItem(item.id)">Remove</button>
+<div class="cart-page">
+  <div *ngIf="cart.length > 0; else emptyCart">
+    <div *ngFor="let item of cart" class="cart-item">
+      <img [src]="item.imageUrl" alt="{{ item.name }}" class="cart-item-image" style="width: 100px; height: 150px;">
+      <div class="cart-item-info">
+        <h3>{{ item.name }}</h3>
+        <p>Price: ${{ item.price }}</p>
+        <p>Quantity: {{ item.quantity }}</p>
+        <button (click)="incrementItem(item.id)">+</button>
+        <button (click)="decrementItem(item.id)">-</button>
+        <button (click)="removeItem(item.id)">Remove</button>
+      </div>
+    </div>
+    <div class="cart-total">
+      <h3>Total Price: ${{ totalPrice }}</h3>
+      <button (click)="handleCheckOut()">Checkout</button>
     </div>
   </div>
-  <div class="cart-total">
-    <h3>Total Price: ${{ totalPrice }}</h3>
-    <button (click)="handleCheckOut()">Checkout</button>
+
+  <div class="card-details" *ngIf="showCardDetails">
+    <app-card-payment [total]="totalPrice"></app-card-payment>
   </div>
+
+
 </div>
 
-<div class="card-details">
-  <app-card-payment></app-card-payment>
-</div>
 
 <ng-template #emptyCart>
   <p>Your cart is empty.</p>

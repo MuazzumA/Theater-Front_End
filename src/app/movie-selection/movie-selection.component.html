@@ -10,16 +10,6 @@
     <button (click)="searchMovies()">Search</button> <!-- Button to trigger search -->
   </div>
 
-<!-- <div class="movies">
-    <ul class="movie-list">
-        <li *ngFor="let post of data">
-            <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/football%2Csoccer%2Csport%2Cevent-design-template-31189bebe42fe7f743327895731b60ae_screen.jpg?ts=1698356519">
-            <h3>{{post.title}}</h3>
-            <p> {{ post.description }} </p>
-        </li>
-    </ul>
-</div> -->
-
 <div class="movies">
     <ul class="movie-list">
       <li *ngFor="let post of filteredMovies" (click)="fetchMovieDetails(post.id)">

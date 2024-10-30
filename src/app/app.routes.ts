@@ -17,6 +17,7 @@ export const routes: Routes = [
   {path: 'cart', component: CartComponent},
   {path: 'home', component: HomeComponent},
   {path: 'movies', component: MovieSelectionComponent},
+  { path: 'seat/:id', component: SeatSelectionComponent},
 
 
   /**ADMIN ROUTES */

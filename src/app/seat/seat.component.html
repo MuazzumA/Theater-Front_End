@@ -2,7 +2,11 @@
   <!-- Movie Header -->
   <div class="movie-header">
     <div class="movie-info">
-      <img [src]="selectedMovie.imageUrl" [alt]="selectedMovie.name" class="movie-poster">
+      <img 
+      *ngIf="selectedMovie.imageUrl; else placeholder"
+      [src]="selectedMovie.imageUrl" 
+      [alt]="selectedMovie.name" 
+      class="movie-poster">
       <div class="movie-details">
         <h2>{{ selectedMovie.name }}</h2>
         <p>{{ selectedMovie.theater }} | {{ selectedMovie.time }} | {{ selectedMovie.duration }}</p>
@@ -71,3 +75,7 @@
     Continue
   </button>
 </div>
+
+<ng-template #placeholder>
+  <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/football%2Csoccer%2Csport%2Cevent-design-template-31189bebe42fe7f743327895731b60ae_screen.jpg" alt="Default Image">
+</ng-template>

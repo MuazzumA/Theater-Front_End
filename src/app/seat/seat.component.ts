@@ -1,6 +1,8 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { ShowtimeService } from '../service/showtime.service';
 
 interface Movie {
   id: number;
@@ -11,6 +13,7 @@ interface Movie {
   showDates: string[];
   imageUrl: string;
 }
+
 
 interface SeatState {
   status: 'available' | 'occupied' | 'selected';
@@ -25,32 +28,36 @@ interface SeatState {
   styleUrls: ['./seat.component.css']
 })
 export class SeatSelectionComponent implements OnInit {
-  selectedMovie: Movie = {
-    id: 1,
-    name: 'Star Wars: The Phantom Menace',
-    theater: 'Theater Name',
-    time: 'Show Time',
-    duration: 'Movie Duration',
-    showDates: ['10/21', '10/22', '10/23', '10/24', '10/25'],
-    imageUrl: 'https://m.media-amazon.com/images/M/MV5BODVhNGIxOGItYWNlMi00YTA0LWI3NTctZmQxZGUwZDEyZWI4XkEyXkFqcGc@._V1_.jpg'
-  };
+  // selectedMovie: Movie = {
+  //   id: 1,
+  //   name: 'Star Wars: The Phantom Menace',
+  //   theater: 'Theater Name',
+  //   time: 'Show Time',
+  //   duration: 'Movie Duration',
+  //   showDates: ['10/21', '10/22', '10/23', '10/24', '10/25'],
+  //   imageUrl: 'https://m.media-amazon.com/images/M/MV5BODVhNGIxOGItYWNlMi00YTA0LWI3NTctZmQxZGUwZDEyZWI4XkEyXkFqcGc@._V1_.jpg'
+  // };
+  
 
+  selectedMovieId!: number; // Assume you pass this from the previous component
+  selectedMovie!: Movie;
   seatLayout: SeatState[][] = [];
-  showTimes: string[] = ['2:00 pm', '3:00 pm', '4:00 pm', '6:00 pm', '8:00 pm'];
-  selectedDate: string = '10/21';
-  selectedTime: string = '6:00 pm';
+  showTimes: string[] = [];
+  selectedDate: string = '';
+  selectedTime: string = '';
   private isBrowser: boolean;
 
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) platformId: Object,
+    private showtimeService: ShowtimeService // Inject the service
+  ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
-    this.initializeSeatLayout();
-    if (this.isBrowser) {
-      this.loadSavedData();
-    }
+    this.loadShowtimes(); // Load showtimes for the selected movie
   }
+
 
   private initializeSeatLayout(): void {
     this.seatLayout = Array(8).fill(null).map((_, rowIndex) =>
@@ -76,13 +83,44 @@ export class SeatSelectionComponent implements OnInit {
     }
   }
 
+  private loadShowtimes(): void {
+    if (this.selectedMovieId) {
+      this.showtimeService.getShowtimes(this.selectedMovieId).subscribe(
+        (data) => {
+          this.selectedMovie = data.movie; // Adjust according to your API response
+          this.showTimes = data.showTimes; // Adjust according to your API response
+          this.selectedDate = this.selectedMovie.showDates[0]; // Default to the first show date
+          this.loadSeats(); // Load seats after fetching showtimes
+        },
+        (error) => {
+          console.error('Error fetching showtimes:', error);
+        }
+      );
+    }
+  }
+
+  private loadSeats(): void {
+    if (this.selectedMovieId && this.selectedDate && this.selectedTime) {
+      this.showtimeService.getSeats(this.selectedMovieId, this.selectedDate, this.selectedTime).subscribe(
+        (data) => {
+          this.seatLayout = data.seatLayout; // Adjust based on your API response
+        },
+        (error) => {
+          console.error('Error fetching seats:', error);
+        }
+      );
+    }
+  }
+
   selectDate(date: string): void {
     this.selectedDate = date;
+    this.loadSeats();
     this.saveToLocalStorage();
   }
 
   selectTime(time: string): void {
     this.selectedTime = time;
+    this.loadSeats();
     this.saveToLocalStorage();
   }
 

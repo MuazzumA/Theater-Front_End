@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { error } from 'console';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './card-payment.component.css'
 })
 export class CardPaymentComponent {
+  @Input() total!: number;
+
   paymentModel = {
     name: '',
     cardNumber: '',
@@ -20,6 +22,7 @@ export class CardPaymentComponent {
   };
 
   constructor(private http: HttpClient){}
+  
 
   onSubmit(){
     this.http.post('/processPayment', this.paymentModel)

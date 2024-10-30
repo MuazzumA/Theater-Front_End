@@ -4,6 +4,17 @@
   padding: 20px;
 }
 
+.cart-page {
+  margin-top: 60px;
+  display: flex;
+
+  .card-details{
+  margin-left: 100px;
+  }
+}
+
+
+
 .cart-item {
   display: flex;
   align-items: center;
