@@ -44,6 +44,12 @@ export class ApiService {
     return this.http.get(`${ApiService.BASE_URL}/user/profile/${adminId}`);
   }
 
+  /** Movies */
+  getAllMovies(): Observable<Movie[]> {
+      return this.http.get<Movie[]>(`${ApiService.BASE_URL}/movie`); // Updated to /movie
+  }
+
+
   /** Shopping cart */
   createOrder(orderRequest: any): Observable<any> {
     return this.http.post(`${ApiService.BASE_URL}/order/create`, orderRequest);

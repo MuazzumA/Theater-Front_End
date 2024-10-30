@@ -3,7 +3,7 @@ body {
 }
 
 .demo-cont {
-  height: 70vh;
+  height: 100vh;
 }
 
 .demo-cont__credits {
@@ -154,7 +154,7 @@ body {
   top: 15%;
   width: calc(67vh * 0.75);
   height: 67vh;
-  margin-right: -90px; /* 30px padding * -3 */
+  margin-right: -90px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 0, 6vh 0, 6vh 61vh, 44vh 61vh, 44vh 6vh, 6vh 6vh);
   transform-origin: 50% 0;
   transition-timing-function: ease-in-out;

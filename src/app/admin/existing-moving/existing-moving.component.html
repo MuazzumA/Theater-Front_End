@@ -1,0 +1,70 @@
+<div class="existing-movie-container">
+  <h1 class="title">Add New Showing</h1>
+
+  <div class="section">
+    <h2>Choose an Existing Movie to add New Showing:</h2>
+
+    <div class="movie-carousel">
+      <button class="carousel-button prev" (click)="previousMovie()"
+              [class.disabled]="currentMovieIndex === 0">
+        &#8249;
+      </button>
+
+      <div class="movie-info" *ngIf="movies.length > 0">
+        <h3>Here is the movie info:</h3>
+        <div class="movie-details">
+          <!-- Access the current movie's coverImageBase64 using the currentMovieIndex -->
+          <img
+            *ngIf="movies[currentMovieIndex].coverImageBase64"
+            [src]="'data:image/jpeg;base64,' + movies[currentMovieIndex].coverImageBase64"
+            class="movie-poster"
+          />
+          <div class="movie-text">
+            <span class="movie-title">{{ movies[currentMovieIndex].title }}</span>
+            <span class="movie-description">{{ movies[currentMovieIndex].description }}</span>
+            <span>{{ movies[currentMovieIndex].coverImageBase64 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="carousel-button next" (click)="nextMovie()"
+              [class.disabled]="currentMovieIndex >= movies.length - 1">
+        &#8250;
+      </button>
+    </div>
+  </div>
+
+
+  <div class="section">
+    <h2>Choose a Date and the Time for the New Showing:</h2>
+
+    <div class="datetime-container">
+      <div class="calendar">
+        <div class="calendar-header">November</div>
+        <div class="calendar-grid">
+          <div class="weekday" *ngFor="let day of weekDays">{{day}}</div>
+          <div class="day"
+               *ngFor="let day of calendarDays"
+               [class.active]="selectedDate === '2024-11-' + day"
+               (click)="selectDate('2024-11-' + day)">
+            {{day}}
+          </div>
+        </div>
+      </div>
+
+      <div class="time-slots">
+        <button *ngFor="let slot of timeSlots"
+                [class.available]="slot.available"
+                [class.selected]="selectedTime === slot.time"
+                [disabled]="!slot.available"
+                (click)="selectTime(slot.time)">
+          {{slot.time}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-section">
+    <button class="add-button" (click)="handleSubmit()">Add</button>
+  </div>
+</div>

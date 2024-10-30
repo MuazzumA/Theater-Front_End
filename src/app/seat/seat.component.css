@@ -39,7 +39,6 @@
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
-  background: #FFF8E1;
   padding: 15px;
   border-radius: 8px;
   overflow-x: auto;
@@ -67,9 +66,9 @@
 
 .screen {
   background: #FF5722;
-  height: 40px;
+  height: 50px;
   margin: 0 auto;
-  width: 80%;
+  width: 70%;
   transform: perspective(200px) rotateX(-10deg);
   transform-origin: center bottom;
   display: flex;
@@ -108,8 +107,8 @@
 }
 
 .seat {
-  width: 30px;
-  height: 30px;
+  width: 65px;
+  height: 40px;
   cursor: pointer;
   background: #444;
   border-radius: 4px;
@@ -205,10 +204,15 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 10;
+  right: -700px;
+  bottom: 100px;
+
 }
 
 .continue-btn:disabled {
-  background: #ccc;
+  background: red;
   cursor: not-allowed;
 }
 
@@ -230,4 +234,12 @@
     width: 80px;
     height: 120px;
   }
+
+  .seat-selection-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align children to the start (left) */
+    position: relative;
+  }
+
 }
