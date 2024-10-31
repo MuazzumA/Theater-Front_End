@@ -127,11 +127,13 @@ export class SeatSelectionComponent implements OnInit {
     if (seat.status === 'occupied') return;
 
     seat.status = seat.status === 'selected' ? 'available' : 'selected';
-
+  
+    // Save to local storage if in the browser
     if (this.isBrowser) {
       this.saveToLocalStorage();
     }
   }
+  
 
   private loadShowtimes(): void {
     if (this.selectedMovieId) {
