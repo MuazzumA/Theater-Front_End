@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+<<<<<<< Updated upstream
 import { ApiService, AddShowingDTO } from '../../service/api.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angular/forms';
+=======
+import { ApiService } from '../../service/api.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+>>>>>>> Stashed changes
 
 interface Movie {
   id: number;
@@ -24,7 +29,11 @@ interface TimeSlot {
 @Component({
   selector: 'app-existing-movie',
   standalone: true,
+<<<<<<< Updated upstream
   imports: [CommonModule, ReactiveFormsModule],
+=======
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+>>>>>>> Stashed changes
   templateUrl: './existing-moving.component.html',
   styleUrls: ['./existing-moving.component.css']
 })

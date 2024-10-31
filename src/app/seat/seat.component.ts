@@ -3,15 +3,23 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { ShowtimeService } from '../service/showtime.service';
+import { ApiService } from '../service/api.service';
+import { ActivatedRoute } from '@angular/router';
 
 interface Movie {
   id: number;
+<<<<<<< Updated upstream
   name: string;
   time?: string;
   theater?: string;
   duration?: string;
   showDates: string[];
   imageUrl: string;
+=======
+  title: string;  // Changed from 'name' to 'title' to match your movie details
+  description?: string; // Optional if needed
+  coverImageBase64: string; // Added to match your movie details
+>>>>>>> Stashed changes
 }
 
 
@@ -49,15 +57,33 @@ export class SeatSelectionComponent implements OnInit {
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
-    private showtimeService: ShowtimeService // Inject the service
+    private showtimeService: ShowtimeService, // Inject the service
+    private apiService: ApiService,
+    private route: ActivatedRoute,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
   ngOnInit(): void {
+    // Retrieve the movie ID from the route parameters
+    this.route.params.subscribe(params => {
+      this.selectedMovieId = +params['id']; // Convert string to number
+      this.fetchData(); // Fetch movie data after getting the ID
+    });
+
     this.loadShowtimes(); // Load showtimes for the selected movie
   }
 
+  fetchData() {
+    this.apiService.getMovieById(this.selectedMovieId).subscribe(
+      data => {
+        this.selectedMovie = data;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
 
   private initializeSeatLayout(): void {
     this.seatLayout = Array(8).fill(null).map((_, rowIndex) =>
