@@ -12,6 +12,8 @@ import { MovieSelectionComponent } from './movie-selection/movie-selection.compo
 import { AddShowingComponent } from './admin/add-showing/add-showing.component';
 import { ExistingMovieComponent } from './admin/existing-moving/existing-moving.component';
 
+
+
 export const routes: Routes = [
   /**PUBLIC ROUTES */
   {path: 'register', component: RegisterComponent},
@@ -33,6 +35,8 @@ export const routes: Routes = [
   /**MOVIE SHOWING */
   { path: 'seat', component: SeatSelectionComponent }
 ];
+
+
 
 
 

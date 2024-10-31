@@ -9,6 +9,16 @@ interface Movie {
   coverImageBase64: string;
 }
 
+// Updated AddShowingDTO to include 'available' in timeSlot
+export interface AddShowingDTO {
+  movieId: number;
+  date: string; // Format: YYYY-MM-DD
+  timeSlot: {
+    time: string; // Format: HH:mm
+    available?: boolean; // Optional property
+  };
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -44,11 +54,14 @@ export class ApiService {
     return this.http.get(`${ApiService.BASE_URL}/user/profile/${adminId}`);
   }
 
-  /** Movies */
-  getAllMovies(): Observable<Movie[]> {
-      return this.http.get<Movie[]>(`${ApiService.BASE_URL}/movie`); // Updated to /movie
+  addNewShowing(showingData: AddShowingDTO): Observable<any> {
+    return this.http.post(`${ApiService.BASE_URL}/add_new/${showingData.movieId}`, showingData);
   }
 
+  /** Movies */
+  getAllMovies(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${ApiService.BASE_URL}/movie`); // Updated to /movie
+  }
 
   /** Shopping cart */
   createOrder(orderRequest: any): Observable<any> {
@@ -64,5 +77,3 @@ export class ApiService {
     return this.http.get<Movie>(`${ApiService.BASE_URL}/movie/${id}`);
   }
 }
-
-
