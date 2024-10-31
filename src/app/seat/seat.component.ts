@@ -88,6 +88,10 @@ export class SeatSelectionComponent implements OnInit {
       this.showtimeService.getShowtimes(this.selectedMovieId).subscribe(
         (data) => {
           this.selectedMovie = data.movie; // Adjust according to your API response
+
+          // EDIT THIS 
+          // need to set show times and dates from getShowTimes method
+          
           this.showTimes = data.showTimes; // Adjust according to your API response
           this.selectedDate = this.selectedMovie.showDates[0]; // Default to the first show date
           this.loadSeats(); // Load seats after fetching showtimes

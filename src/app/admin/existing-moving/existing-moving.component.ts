@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ApiService, AddShowingDTO } from '../../service/api.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from '@angular/forms';
 
 interface Movie {
   id: number;
@@ -24,7 +24,7 @@ interface TimeSlot {
 @Component({
   selector: 'app-existing-movie',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './existing-moving.component.html',
   styleUrls: ['./existing-moving.component.css']
 })
