@@ -3,30 +3,24 @@
   <div class="movie-header">
     <div class="movie-info">
       <img 
-      *ngIf="selectedMovie.imageUrl; else placeholder"
-      [src]="selectedMovie.imageUrl" 
-      [alt]="selectedMovie.name" 
-      class="movie-poster">
+        *ngIf="selectedMovie.coverImageBase64; else placeholder"
+        [src]="selectedMovie.coverImageBase64" 
+        [alt]="selectedMovie.title" 
+        class="movie-poster">
       <div class="movie-details">
-<<<<<<< Updated upstream
-        <h2>{{ selectedMovie.name }}</h2>
-        <p>{{ selectedMovie.theater }} | {{ selectedMovie.time }} | {{ selectedMovie.duration }}</p>
-=======
         <h2>{{ selectedMovie.title }}</h2>
-        <!-- <p>{{ selectedMovie.theater }} | {{ selectedMovie.time }} | {{ selectedMovie.duration }}</p> -->
->>>>>>> Stashed changes
       </div>
     </div>
   </div>
 
   <!-- Date Selection -->
-  <div class="date-selection">
-    <button *ngFor="let date of selectedMovie.showDates"
-            [class.active]="selectedDate === date"
-            (click)="selectDate(date)">
-      {{ date }}
-    </button>
-  </div>
+<div class="date-selection">
+  <button *ngFor="let showtime of dummyShowtimes"
+          [class.active]="selectedDate === showtime.date"
+          (click)="selectDate(showtime.date)">
+    {{ showtime.date }}
+  </button>
+</div>
 
   <!-- Screen -->
   <div class="screen-container">
@@ -34,28 +28,36 @@
   </div>
 
   <!-- Seats -->
-  <div class="seating-layout">
-    <div class="row-identifier" *ngFor="let row of seatLayout; let rowIndex = index">
-      <span class="row-label">{{ getRowLabel(rowIndex) }}</span>
-      <div class="seat-row">
-        <div *ngFor="let seat of row; let seatIndex = index"
-             class="seat"
-             [class.occupied]="seat.status === 'occupied'"
-             [class.selected]="seat.status === 'selected'"
-             (click)="onSeatClick(rowIndex, seatIndex)">
-          <span class="seat-label">{{ seatIndex + 1 }}</span>
-        </div>
+<div class="seating-layout">
+  <div class="row-identifier" *ngFor="let row of dummySeatLayout; let rowIndex = index">
+    <span class="row-label">{{ getRowLabel(rowIndex) }}</span>
+    <div class="seat-row">
+      <div *ngFor="let seat of row; let seatIndex = index"
+           class="seat"
+           [class.occupied]="seat.status === 'occupied'"
+           [class.selected]="seat.status === 'selected'"
+           (click)="onSeatClick(rowIndex, seatIndex)">
+        <span class="seat-label">{{ seatIndex + 1 }}</span>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Time Selection -->
   <div class="time-selection">
-    <button *ngFor="let time of showTimes"
-            [class.active]="selectedTime === time"
-            (click)="selectTime(time)">
-      {{ time }}
+    <button *ngFor="let showtime of dummyShowtimes" 
+            [class.active]="selectedDate === showtime.date" 
+            (click)="selectDate(showtime.date)">
+      {{ showtime.date }}
     </button>
+
+    <div *ngIf="selectedDate">
+      <button *ngFor="let time of (showTimes | findTimes: selectedDate)" 
+              [class.active]="selectedTime === time" 
+              (click)="selectTime(time)">
+        {{ time }}
+      </button>
+    </div>
   </div>
 
   <!-- Legend -->
@@ -79,8 +81,6 @@
           (click)="continue()">
     Continue
   </button>
-
-
 </div>
 
 <ng-template #placeholder>

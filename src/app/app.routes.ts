@@ -15,14 +15,6 @@ import { ExistingMovieComponent } from './admin/existing-moving/existing-moving.
 
 
 export const routes: Routes = [
-<<<<<<< Updated upstream
-  /**PUBLIC ROUTES */
-  {path: 'register', component: RegisterComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'cart', component: CartComponent},
-  {path: 'home', component: HomeComponent},
-  {path: 'movies', component: MovieSelectionComponent},
-=======
   // Public Routes
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Add default route
   { path: 'register', component: RegisterComponent },
@@ -30,7 +22,6 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'home', component: HomeComponent },
   { path: 'movies', component: MovieSelectionComponent },
->>>>>>> Stashed changes
   { path: 'seat/:id', component: SeatSelectionComponent},
 
 

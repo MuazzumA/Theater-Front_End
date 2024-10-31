@@ -5,22 +5,19 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { ShowtimeService } from '../service/showtime.service';
 import { ApiService } from '../service/api.service';
 import { ActivatedRoute } from '@angular/router';
+import { FindTimesPipe } from '../find-times.pipe';
 
 interface Movie {
   id: number;
-<<<<<<< Updated upstream
-  name: string;
-  time?: string;
-  theater?: string;
-  duration?: string;
-  showDates: string[];
-  imageUrl: string;
-=======
   title: string;  // Changed from 'name' to 'title' to match your movie details
   description?: string; // Optional if needed
   coverImageBase64: string; // Added to match your movie details
->>>>>>> Stashed changes
 }
+
+interface Showtime {
+  date: string;
+  times: string[]; // Array of times for this date
+} 
 
 
 interface SeatState {
@@ -31,7 +28,7 @@ interface SeatState {
 @Component({
   selector: 'app-seat-selection',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FindTimesPipe],
   templateUrl: './seat.component.html',
   styleUrls: ['./seat.component.css']
 })
@@ -45,15 +42,36 @@ export class SeatSelectionComponent implements OnInit {
   //   showDates: ['10/21', '10/22', '10/23', '10/24', '10/25'],
   //   imageUrl: 'https://m.media-amazon.com/images/M/MV5BODVhNGIxOGItYWNlMi00YTA0LWI3NTctZmQxZGUwZDEyZWI4XkEyXkFqcGc@._V1_.jpg'
   // };
+
+
   
 
   selectedMovieId!: number; // Assume you pass this from the previous component
   selectedMovie!: Movie;
   seatLayout: SeatState[][] = [];
-  showTimes: string[] = [];
+  showTimes: { date: string; times: string[] }[] = [];
+
   selectedDate: string = '';
   selectedTime: string = '';
   private isBrowser: boolean;
+
+  dummyShowtimes: Showtime[] = [
+    {
+      date: '2024-10-30',
+      times: ['10:00 AM', '1:00 PM', '4:00 PM']
+    },
+    {
+      date: '2024-10-31',
+      times: ['11:00 AM', '2:00 PM', '5:00 PM']
+    },
+    {
+      date: '2024-11-01',
+      times: ['12:00 PM', '3:00 PM', '6:00 PM']
+    }
+  ];
+  
+  // Dummy seat layout
+  dummySeatLayout: SeatState[][] = this.initializeDummySeats();
 
   constructor(
     @Inject(PLATFORM_ID) platformId: Object,
@@ -85,10 +103,10 @@ export class SeatSelectionComponent implements OnInit {
     );
   }
 
-  private initializeSeatLayout(): void {
-    this.seatLayout = Array(8).fill(null).map((_, rowIndex) =>
+  private initializeDummySeats(): SeatState[][] {
+    return Array(8).fill(null).map((_, rowIndex) =>
       Array(10).fill(null).map((_, seatIndex) => ({
-        status: Math.random() < 0.3 ? 'occupied' : 'available',
+        status: Math.random() < 0.3 ? 'occupied' : 'available', // Randomly mark some as occupied
         id: `${this.getRowLabel(rowIndex)}${seatIndex + 1}`
       }))
     );
@@ -96,6 +114,12 @@ export class SeatSelectionComponent implements OnInit {
 
   getRowLabel(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  loadSeats(): void {
+    if (this.selectedMovieId && this.selectedDate && this.selectedTime) {
+      this.seatLayout = this.dummySeatLayout; // Load the dummy seat layout
+    }
   }
 
   onSeatClick(rowIndex: number, seatIndex: number): void {
@@ -113,13 +137,16 @@ export class SeatSelectionComponent implements OnInit {
     if (this.selectedMovieId) {
       this.showtimeService.getShowtimes(this.selectedMovieId).subscribe(
         (data) => {
-          this.selectedMovie = data.movie; // Adjust according to your API response
-
-          // EDIT THIS 
-          // need to set show times and dates from getShowTimes method
+          // Use the movie data from the API
+          this.selectedMovie = data.movie; // Ensure this matches your API response structure
+  
+          // Use dummy showtimes for testing
+          this.showTimes = this.dummyShowtimes; // Use dummy data directly
+  
+          // You can also consider getting showDates from your movie data if needed
+          this.selectedDate = this.showTimes[0]?.date; // Default to the first show date
+          this.selectedTime = this.showTimes[0]?.times[0]; // Default to the first time of the first date
           
-          this.showTimes = data.showTimes; // Adjust according to your API response
-          this.selectedDate = this.selectedMovie.showDates[0]; // Default to the first show date
           this.loadSeats(); // Load seats after fetching showtimes
         },
         (error) => {
@@ -128,19 +155,7 @@ export class SeatSelectionComponent implements OnInit {
       );
     }
   }
-
-  private loadSeats(): void {
-    if (this.selectedMovieId && this.selectedDate && this.selectedTime) {
-      this.showtimeService.getSeats(this.selectedMovieId, this.selectedDate, this.selectedTime).subscribe(
-        (data) => {
-          this.seatLayout = data.seatLayout; // Adjust based on your API response
-        },
-        (error) => {
-          console.error('Error fetching seats:', error);
-        }
-      );
-    }
-  }
+  
 
   selectDate(date: string): void {
     this.selectedDate = date;
